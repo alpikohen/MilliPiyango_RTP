@@ -10,7 +10,7 @@ from html_reporter import generate_html
 
 
 OUTPUT_FILE = "cekilis_sonuclari.html"
-URL = "https://www.millipiyangoonline.com/super-loto/cekilis-sonuclari.70.2026"
+URL = "https://www.millipiyangoonline.com/super-loto/cekilis-sonuclari.65.2026"
 
 
 def scrape_winning_list():

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from rtp_calculation import TOTAL_NUMBERS, SELECTED_NUMBERS, TICKET_PRICE
+from rtp_calculation import TOTAL_NUMBERS, SELECTED_NUMBERS, TICKET_PRICE, calculate_probability
 from utils import tr_num
 
 
@@ -210,8 +210,9 @@ def generate_html(data, rtp_data=None):
 
     if rtp_data:
         rtp_pct = rtp_data["rtp_percentage"]
+        category_total = tr_num(rtp_data.get("category_rtp_total", rtp_pct), 2)
         return_per_25 = rtp_data["return_per_25tl"]
-        total_prize = tr_num(rtp_data["total_prizes"], 2)
+        total_prize = tr_num(rtp_data.get("scraped_total_prizes", rtp_data["total_prizes"]), 2)
         devir_prize = tr_num(rtp_data["devir_amount"], 2)
         total_comb = f"{rtp_data['total_combinations']:,}".replace(",", ".")
 
@@ -220,7 +221,7 @@ def generate_html(data, rtp_data=None):
                 <div class="rtp-grid">
                     <div class="rtp-item">
                         <div class="rtp-label">RTP Oranı</div>
-                        <div class="rtp-value">{rtp_pct:.2f}%</div>
+                        <div class="rtp-value">{category_total}%</div>
                         <div class="rtp-subtext">Oyuncuya geri dönüş</div>
                     </div>
                     <div class="rtp-item">
@@ -236,21 +237,19 @@ def generate_html(data, rtp_data=None):
                     <div class="rtp-item">
                         <div class="rtp-label">Olası Kombinasyon</div>
                         <div class="rtp-value">{total_comb}</div>
-                        <div class="rtp-subtext">C({TOTAL_NUMBERS}, {SELECTED_NUMBERS}) = {total_comb}</div>
+                        <div class="rtp-subtext">C({TOTAL_NUMBERS}, {SELECTED_NUMBERS})</div>
                     </div>
                     <div class="rtp-item">
                         <div class="rtp-label">Bilet Fiyatı</div>
                         <div class="rtp-value">{rtp_data['ticket_price']} ₺</div>
-                        <div class="rtp-subtext">Standart bilet</div>
                     </div>
                     <div class="rtp-item">
                         <div class="rtp-label">25 TL Karşılığı</div>
                         <div class="rtp-value">{return_per_25:.2f} ₺</div>
-                        <div class="rtp-subtext">Bir bilet için</div>
                     </div>
                 </div>
                 <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px; font-size: 13px; color: #333; border-left: 4px solid #28a745;">
-                    <strong>💡 Açıklama:</strong> Her 25 TL'lik bilet oynadığında, ortalama olarak <strong>{return_per_25:.2f} TL</strong> geri kazanırsınız. Eğer bu oyun binlerce çekilişi oynanırsa, yatırdığınız her 100 TL'den <strong>{rtp_pct:.2f} TL</strong> geri dönüş sağlanır.
+                    <strong>💡 Açıklama:</strong> Her 25 TL'lik bilet oynadığında, ortalama olarak <strong>{return_per_25:.2f} TL</strong> geri kazanırsınız.
                 </div>
             </div>
 """
@@ -274,7 +273,7 @@ def generate_html(data, rtp_data=None):
         for tunus in sorted(rtp_data["category_analysis"].keys(), reverse=True):
             cat = rtp_data["category_analysis"][tunus]
             unit_prize_str = tr_num(cat["prize_per_winner"], 2)
-            probability_value = cat["probability"]
+            probability_value = calculate_probability(tunus)["probability"]
 
             if probability_value > 0:
                 odds_value = 1 / probability_value
@@ -299,9 +298,8 @@ def generate_html(data, rtp_data=None):
 """
 
         non_zero_cats = [cat for cat in rtp_data["category_analysis"].values() if cat["prize_per_winner"] > 0]
-        total_row_rtp = sum(cat["rtp_percentage"] for cat in non_zero_cats)
         total_row_return = sum(cat["return_per_25tl"] for cat in non_zero_cats)
-        total_row_rtp_str = tr_num(total_row_rtp, 4) + "%"
+        total_row_rtp_str = tr_num(rtp_data.get("category_rtp_total", rtp_pct), 4) + "%"
         total_row_return_str = tr_num(total_row_return, 4)
 
         html_content += f"""                        <tr class="highlight-contribution">
