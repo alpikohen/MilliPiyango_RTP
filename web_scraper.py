@@ -10,7 +10,7 @@ from html_reporter import generate_html
 
 
 OUTPUT_FILE = "cekilis_sonuclari.html"
-URL = "https://www.millipiyangoonline.com/super-loto/cekilis-sonuclari.65.2026"
+URL = "https://www.millipiyangoonline.com/super-loto/cekilis-sonuclari.70.2026"
 
 
 def scrape_winning_list():
@@ -62,8 +62,15 @@ def main():
         print("\n❌ Veri alınamadı!")
         return
     print(f"\n✅ {len(data)} liste bulundu!")
+    # Extract draw info from URL (e.g. draw number from .70.2026)
+    import re
+    draw_match = re.search(r"\.(\d+)\.(\d+)", URL)
+    if draw_match:
+        draw_info = f"Çekiliş #{draw_match.group(1)} / {draw_match.group(2)}"
+    else:
+        draw_info = "Bilinmeyen Çekiliş"
     rtp_data = calculate_rtp(data)
-    html_content = generate_html(data, rtp_data)
+    html_content = generate_html(data, rtp_data, draw_info)
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write(html_content)
     print(f"✅ HTML kaydedildi: {OUTPUT_FILE}\n")

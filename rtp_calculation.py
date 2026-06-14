@@ -2,6 +2,7 @@ import math
 from decimal import Decimal
 
 from utils import parse_prize
+from tax_calculator import calculate_tax
 
 
 TOTAL_NUMBERS = 60
@@ -48,7 +49,7 @@ def calculate_rtp(data):
             kazanan_sayisi = 1 if kazanan_raw.lower() == "devir" else (int(kazanan_raw) if kazanan_raw.isdigit() else 0)
             scraped_total_prizes += float(prize) * kazanan_sayisi
             prob = calculate_probability(tunus)["probability"]
-            ev = float(prize) * prob
+            ev = (float(prize) - calculate_tax(float(prize))) * prob
             rtp_pct = (ev / TICKET_PRICE) * 100
 
             if float(prize) > 1000 and tunus >= 5:
