@@ -1,4 +1,4 @@
-from web_scraper import main
+from lottery_analyzer.cli import main
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
