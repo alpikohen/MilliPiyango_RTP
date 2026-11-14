@@ -1,6 +1,6 @@
 # Milli Piyango Oyun Analizleri
 
-Milli Piyango oyunlarının çekiliş sonuçlarını Selenium ile alan, oyun kurallarına özel analiz yapan ve HTML raporları üreten bir Python projesi. Süper Loto ve On Numara kayıtlıdır; yeni oyunlar `lottery_analyzer/games/` altına eklenebilir.
+Milli Piyango oyunlarının çekiliş sonuçlarını Selenium ile alan, oyun kurallarına özel analiz yapan ve HTML raporları üreten bir Python projesi. Süper Loto, On Numara ve Şans Topu kayıtlıdır; yeni oyunlar `lottery_analyzer/games/` altına eklenebilir.
 
 ## Neden?
 
@@ -31,6 +31,7 @@ pip install selenium beautifulsoup4
 cd C:\Users\ASUS\Desktop\MilliPiyango_RTP
 python run.py --game super-loto
 python run.py --game on-numara
+python run.py --game sans-topu
 ```
 
 Tüm kayıtlı oyunları çalıştırmak ve RTP sıralamalı genel raporu üretmek için:
@@ -39,7 +40,7 @@ Tüm kayıtlı oyunları çalıştırmak ve RTP sıralamalı genel raporu üretm
 python run.py --all
 ```
 
-Tekil komutlar Süper Loto için `super_loto.html`, On Numara için `on_numara.html` üretir. `--all` ayrıca bu raporlara bağlantı ve oyunların RTP/kolon getirisi özetini içeren `index.html` oluşturur.
+Tekil komutlar sırasıyla `super_loto.html`, `on_numara.html` ve `sans_topu.html` üretir. `--all` ayrıca bu raporlara bağlantı ve oyunların RTP/kolon getirisi özetini içeren `index.html` oluşturur.
 
 ## Proje Yapısı
 
@@ -63,13 +64,18 @@ MilliPiyango_RTP/
 │   │   │   ├── game.py
 │   │   │   ├── rules.py
 │   │   │   └── analysis.py
+│   │   ├── sans_topu/
+│   │   │   ├── game.py
+│   │   │   ├── rules.py
+│   │   │   └── analysis.py
 │   ├── reports/
 │   │   ├── html.py
-        └── summary.py
+│   │   └── summary.py
 │   └── shared/
 │       ├── formatting.py
 │       └── tax_calculator.py
 ├── super_loto.html
 ├── on_numara.html
+├── sans_topu.html
 └── index.html
 ```

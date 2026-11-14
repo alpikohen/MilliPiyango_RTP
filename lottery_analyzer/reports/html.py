@@ -1,4 +1,5 @@
 from datetime import datetime
+import math
 
 from lottery_analyzer.shared.formatting import tr_num
 from lottery_analyzer.shared.tax_calculator import calculate_tax
@@ -67,6 +68,10 @@ def generate_html(
         total_prize = tr_num(rtp_data.get("scraped_total_prizes", rtp_data["total_prizes"]), 2)
         rollover_prize = tr_num(rtp_data["devir_amount"], 2)
         total_combinations = f"{rtp_data['total_combinations']:,}".replace(",", ".")
+        combination_formula = rtp_data.get(
+            "combination_formula",
+            f"C({total_numbers}, {selected_numbers})",
+        )
 
         html_content += f"""            <div class="rtp-section">
                 <div class="rtp-title">📊 Return to Player (RTP) Analizi</div>
@@ -74,7 +79,7 @@ def generate_html(
                     <div class="rtp-item"><div class="rtp-label">RTP Oranı</div><div class="rtp-value">{category_total}%</div><div class="rtp-subtext">Oyuncuya geri dönüş</div></div>
                     <div class="rtp-item"><div class="rtp-label">Toplam İkramiye</div><div class="rtp-value">{total_prize} ₺</div><div class="rtp-subtext">Devir dahil</div></div>
                     <div class="rtp-item"><div class="rtp-label">Devir Tutarı</div><div class="rtp-value">{rollover_prize} ₺</div><div class="rtp-subtext">Sonraki çekilişe</div></div>
-                    <div class="rtp-item"><div class="rtp-label">Olası Kombinasyon</div><div class="rtp-value">{total_combinations}</div><div class="rtp-subtext">C({total_numbers}, {selected_numbers})</div></div>
+                    <div class="rtp-item"><div class="rtp-label">Olası Kombinasyon</div><div class="rtp-value">{total_combinations}</div><div class="rtp-subtext">{combination_formula}</div></div>
                     <div class="rtp-item"><div class="rtp-label">Bilet Fiyatı</div><div class="rtp-value">{tr_num(ticket_price, 2)} ₺</div></div>
                     <div class="rtp-item"><div class="rtp-label">{tr_num(ticket_price, 2)} TL Karşılığı</div><div class="rtp-value">{return_per_ticket_text} ₺</div></div>
                 </div>
@@ -91,8 +96,13 @@ def generate_html(
                     <thead><tr><th>Kategori</th><th>Birim Ödül (₺)</th><th>Veraset ve İntikal Vergisi (₺)</th><th>Net Ödül (TL)</th><th>Olasılık</th><th>RTP Yüzdesi (%)</th><th>{tr_num(ticket_price, 2)} TL Başına Getiri (₺)</th></tr></thead>
                     <tbody>
 """
-        for matched in sorted(rtp_data["category_analysis"].keys(), reverse=True):
+        category_order = rtp_data.get(
+            "category_order",
+            sorted(rtp_data["category_analysis"].keys(), reverse=True),
+        )
+        for matched in category_order:
             category = rtp_data["category_analysis"][matched]
+            category_label = category.get("label", matched)
             prize_text = tr_num(category["prize_per_winner"], 2)
             tax_amount = calculate_tax(category["prize_per_winner"])
             tax_text = tr_num(tax_amount, 2)
@@ -114,7 +124,7 @@ def generate_html(
             category_return = category.get("return_per_ticket", category.get("return_per_25tl", 0))
             return_text = tr_num(category_return, 4)
             html_content += f"""                        <tr>
-                            <td class="tunus">{matched}</td><td>{prize_text}</td><td>{tax_text}</td><td>{net_prize_text}</td>
+                            <td class="tunus">{category_label}</td><td>{prize_text}</td><td>{tax_text}</td><td>{net_prize_text}</td>
                             <td>{probability_text}</td><td class="highlight-contribution">{rtp_text}</td><td>{return_text}</td>
                         </tr>
 """
@@ -129,9 +139,25 @@ def generate_html(
         )
         total_rtp_text = tr_num(rtp_data.get("category_rtp_total", rtp_percentage), 4) + "%"
         total_return_text = tr_num(total_return, 4)
+        total_probability = math.fsum(
+            category.get("probability", 0)
+            for category in rtp_data["category_analysis"].values()
+        )
+        if math.isclose(total_probability, 1.0, rel_tol=1e-12, abs_tol=1e-12):
+            total_probability_text = "1/1"
+        elif total_probability > 0:
+            total_odds = 1 / total_probability
+            total_denominator = (
+                f"{int(total_odds):,}".replace(",", ".")
+                if total_odds == int(total_odds)
+                else f"{total_odds:,.2f}".replace(",", "_").replace(".", ",").replace("_", ".")
+            )
+            total_probability_text = f"1/{total_denominator}"
+        else:
+            total_probability_text = "N/A"
         html_content += f"""                        <tr class="highlight-contribution">
                             <td><strong>TOPLAM</strong></td><td><strong>-</strong></td><td><strong>-</strong></td>
-                            <td><strong>-</strong></td><td><strong>1/1</strong></td><td><strong>{total_rtp_text}</strong></td>
+                            <td><strong>-</strong></td><td><strong>{total_probability_text}</strong></td><td><strong>{total_rtp_text}</strong></td>
                             <td><strong>{total_return_text}</strong></td>
                         </tr>
                     </tbody>

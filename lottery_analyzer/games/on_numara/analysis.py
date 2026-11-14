@@ -2,6 +2,7 @@ import math
 from decimal import Decimal
 
 from lottery_analyzer.games.on_numara.rules import (
+    ALL_CATEGORIES,
     DRAWN_NUMBERS,
     SELECTED_NUMBERS,
     TICKET_PRICE,
@@ -46,7 +47,7 @@ def calculate_rtp(data):
             "rtp_percentage": 0,
             "return_per_ticket": 0,
         }
-        for matched in WINNING_CATEGORIES
+        for matched in ALL_CATEGORIES
     }
     total_return = 0.0
     scraped_total_prizes = 0.0
