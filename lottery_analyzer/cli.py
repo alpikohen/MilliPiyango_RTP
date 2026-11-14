@@ -1,7 +1,9 @@
 import argparse
+from pathlib import Path
 
 from lottery_analyzer.pipeline import run_game
 from lottery_analyzer.registry import GAMES, get_game
+from lottery_analyzer.reports.summary import generate_summary_html
 
 
 def main(argv=None):
@@ -13,7 +15,16 @@ def main(argv=None):
 
     games = list(GAMES.values()) if args.all else [get_game(args.game)]
     results = [run_game(game) for game in games]
-    return 0 if all(results) else 1
+    successful_results = [result for result in results if result is not None]
+    failed = len(successful_results) != len(results)
+
+    if args.all and successful_results:
+        summary_path = Path(__file__).resolve().parents[1] / "index.html"
+        summary_html = generate_summary_html(successful_results, summary_path)
+        summary_path.write_text(summary_html, encoding="utf-8")
+        print(f"✅ Genel RTP raporu kaydedildi: {summary_path}\n")
+
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":

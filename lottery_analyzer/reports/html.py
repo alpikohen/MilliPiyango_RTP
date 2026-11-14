@@ -8,7 +8,8 @@ def generate_html(
     data,
     rtp_data=None,
     draw_info="",
-    game_name="Super Loto",
+    game_name="Süper Loto",
+    draw_datetime="",
     total_numbers=60,
     selected_numbers=6,
     ticket_price=25,
@@ -29,14 +30,6 @@ def generate_html(
         .content {{ padding: 30px; }}
         .winning-section {{ margin-bottom: 30px; border: 2px solid #e0e0e0; border-radius: 8px; padding: 20px; background: #f9f9f9; }}
         .section-title {{ font-size: 18px; font-weight: bold; color: #333; margin-bottom: 15px; border-bottom: 3px solid #667eea; padding-bottom: 10px; }}
-        .items-list {{ list-style: none; }}
-        .list-item {{ padding: 12px; margin: 8px 0; background: white; border-left: 4px solid #667eea; border-radius: 4px; }}
-        .item-details {{ display: flex; flex-direction: column; gap: 8px; }}
-        .item-row {{ display: flex; align-items: center; gap: 12px; }}
-        .item-row .label {{ font-weight: bold; color: #666; min-width: 70px; font-size: 12px; }}
-        .item-row .value {{ flex: 1; color: #333; font-size: 14px; }}
-        .item-row .value.highlight {{ background: #667eea; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold; }}
-        .item-row .raw-value {{ color: #999; font-size: 11px; margin-left: auto; }}
         .no-data {{ text-align: center; padding: 40px; color: #999; font-size: 16px; }}
         .footer {{ background: #f0f0f0; padding: 20px; text-align: center; color: #666; font-size: 12px; }}
         .rtp-section {{ margin-bottom: 30px; border: 3px solid #28a745; border-radius: 8px; padding: 20px; background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%); }}
@@ -61,7 +54,7 @@ def generate_html(
     <div class="container">
         <div class="header">
             <h1>🎰 Milli Piyango Çekiliş Sonuçları</h1>
-            <p>{game_name} - {draw_info} - {datetime.now().strftime('%d.%m.%Y %H:%M:%S')}</p>
+            <p>{game_name} - {draw_info} - Çekiliş zamanı: {draw_datetime or 'Alınamadı'}</p>
         </div>
         <div class="content">
 """
@@ -69,7 +62,7 @@ def generate_html(
     if rtp_data:
         rtp_percentage = rtp_data["rtp_percentage"]
         category_total = tr_num(rtp_data.get("category_rtp_total", rtp_percentage), 2)
-        return_per_ticket = rtp_data["return_per_25tl"]
+        return_per_ticket = rtp_data.get("return_per_ticket", rtp_data.get("return_per_25tl", 0))
         return_per_ticket_text = tr_num(return_per_ticket, 2)
         total_prize = tr_num(rtp_data.get("scraped_total_prizes", rtp_data["total_prizes"]), 2)
         rollover_prize = tr_num(rtp_data["devir_amount"], 2)
@@ -118,7 +111,8 @@ def generate_html(
                 probability_text = "N/A"
 
             rtp_text = tr_num(category["rtp_percentage"], 4) + "%"
-            return_text = tr_num(category["return_per_25tl"], 4)
+            category_return = category.get("return_per_ticket", category.get("return_per_25tl", 0))
+            return_text = tr_num(category_return, 4)
             html_content += f"""                        <tr>
                             <td class="tunus">{matched}</td><td>{prize_text}</td><td>{tax_text}</td><td>{net_prize_text}</td>
                             <td>{probability_text}</td><td class="highlight-contribution">{rtp_text}</td><td>{return_text}</td>
@@ -129,7 +123,10 @@ def generate_html(
             category for category in rtp_data["category_analysis"].values()
             if category["prize_per_winner"] > 0
         ]
-        total_return = sum(category["return_per_25tl"] for category in non_zero_categories)
+        total_return = sum(
+            category.get("return_per_ticket", category.get("return_per_25tl", 0))
+            for category in non_zero_categories
+        )
         total_rtp_text = tr_num(rtp_data.get("category_rtp_total", rtp_percentage), 4) + "%"
         total_return_text = tr_num(total_return, 4)
         html_content += f"""                        <tr class="highlight-contribution">
@@ -143,21 +140,29 @@ def generate_html(
 """
 
     if data:
+        html_content += """            <div class="winning-section">
+                <div class="section-title">Kazanan Kategoriler</div>
+                <table class="category-table">
+                    <thead>
+                        <tr>
+                            <th>Tutturulan Sayı</th>
+                            <th>Kazanan Kişi Sayısı</th>
+                            <th>Kişi Başı İkramiye</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+"""
         for section in data:
-            html_content += f"""            <div class="winning-section">
-                <div class="section-title">Kazanan Numaralar - Liste #{section['list_index']}</div>
-                <ul class="items-list">
-"""
             for item in section["items"]:
-                html_content += f"""                    <li class="list-item">
-                        <div class="item-details">
-                            <div class="item-row"><span class="label">Tutuş:</span><span class="value">{item['tunus_sayisi']}</span></div>
-                            <div class="item-row"><span class="label">Kazanan:</span><span class="value highlight">{item['kazanan_text']}</span><span class="raw-value">({item['kazanan_sayisi']})</span></div>
-                            <div class="item-row"><span class="label">Ödül:</span><span class="value">{item['odul_text']}</span></div>
-                        </div>
-                    </li>
+                winner_text = item.get("kazanan_text") or item.get("kazanan_sayisi", "")
+                html_content += f"""                        <tr>
+                            <td class="tunus">{item['tutus_sayisi']}</td>
+                            <td>{winner_text}</td>
+                            <td>{item['odul_text']}</td>
+                        </tr>
 """
-            html_content += """                </ul>
+        html_content += """                    </tbody>
+                </table>
             </div>
 """
     else:

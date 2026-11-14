@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milli Piyango Çekiliş Sonuçları</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 10px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; }
+        .header h1 { font-size: 28px; margin-bottom: 10px; }
+        .header p { font-size: 14px; opacity: 0.9; }
+        .content { padding: 30px; }
+        .winning-section { margin-bottom: 30px; border: 2px solid #e0e0e0; border-radius: 8px; padding: 20px; background: #f9f9f9; }
+        .section-title { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 15px; border-bottom: 3px solid #667eea; padding-bottom: 10px; }
+        .no-data { text-align: center; padding: 40px; color: #999; font-size: 16px; }
+        .footer { background: #f0f0f0; padding: 20px; text-align: center; color: #666; font-size: 12px; }
+        .rtp-section { margin-bottom: 30px; border: 3px solid #28a745; border-radius: 8px; padding: 20px; background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%); }
+        .rtp-title { font-size: 20px; font-weight: bold; color: #1b5e20; margin-bottom: 20px; text-align: center; }
+        .rtp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .rtp-item { background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745; text-align: center; }
+        .rtp-label { font-size: 12px; color: #666; font-weight: bold; margin-bottom: 5px; }
+        .rtp-value { font-size: 20px; font-weight: bold; color: #28a745; }
+        .rtp-subtext { font-size: 11px; color: #999; margin-top: 5px; }
+        .category-analysis { margin-top: 30px; padding: 20px; background: linear-gradient(135deg, #f5f9ff 0%, #f0f8ff 100%); border: 2px solid #4a90e2; border-radius: 8px; }
+        .category-title { font-size: 16px; font-weight: bold; color: #1a4d8a; margin-bottom: 15px; }
+        .category-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; }
+        .category-table thead { background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%); color: white; }
+        .category-table th { padding: 12px; text-align: center; font-weight: bold; font-size: 12px; }
+        .category-table td { padding: 12px; text-align: center; border-bottom: 1px solid #e0e0e0; font-size: 12px; }
+        .category-table tbody tr:hover { background: #f9f9f9; }
+        .category-table .tunus { font-weight: bold; color: #1a4d8a; }
+        .category-table .highlight-contribution { background: #fff3cd; font-weight: bold; color: #856404; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎰 Milli Piyango Çekiliş Sonuçları</h1>
+            <p>On Numara 2026 - Çekiliş #91 / 2026 - Çekiliş zamanı: Cuma, 13 Kasım 2026 20:00</p>
+        </div>
+        <div class="content">
+            <div class="rtp-section">
+                <div class="rtp-title">📊 Return to Player (RTP) Analizi</div>
+                <div class="rtp-grid">
+                    <div class="rtp-item"><div class="rtp-label">RTP Oranı</div><div class="rtp-value">41,44%</div><div class="rtp-subtext">Oyuncuya geri dönüş</div></div>
+                    <div class="rtp-item"><div class="rtp-label">Toplam İkramiye</div><div class="rtp-value">11.805.909,1 ₺</div><div class="rtp-subtext">Devir dahil</div></div>
+                    <div class="rtp-item"><div class="rtp-label">Devir Tutarı</div><div class="rtp-value">2.760.941,75 ₺</div><div class="rtp-subtext">Sonraki çekilişe</div></div>
+                    <div class="rtp-item"><div class="rtp-label">Olası Kombinasyon</div><div class="rtp-value">1.646.492.110.120</div><div class="rtp-subtext">C(80, 10)</div></div>
+                    <div class="rtp-item"><div class="rtp-label">Bilet Fiyatı</div><div class="rtp-value">15 ₺</div></div>
+                    <div class="rtp-item"><div class="rtp-label">15 TL Karşılığı</div><div class="rtp-value">6,22 ₺</div></div>
+                </div>
+                <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px; font-size: 13px; color: #333; border-left: 4px solid #28a745;">
+                    <strong>💡 Açıklama:</strong> Her 15 TL'lik bilet oynadığında, ortalama olarak <strong>6,22 TL</strong> geri kazanırsınız.
+                </div>
+            </div>
+            <div class="category-analysis">
+                <div class="category-title">📈 Detaylı RTP Analizi</div>
+                <table class="category-table">
+                    <thead><tr><th>Kategori</th><th>Birim Ödül (₺)</th><th>Veraset ve İntikal Vergisi (₺)</th><th>Net Ödül (TL)</th><th>Olasılık</th><th>RTP Yüzdesi (%)</th><th>15 TL Başına Getiri (₺)</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td class="tunus">10</td><td>2.760.941,75</td><td>538.801,35</td><td>2.222.140,4</td>
+                            <td>1/2.546.203,19</td><td class="highlight-contribution">5,8182%</td><td>0,8727</td>
+                        </tr>
+                        <tr>
+                            <td class="tunus">9</td><td>32.749,4</td><td>0</td><td>32.749,4</td>
+                            <td>1/57.070,07</td><td class="highlight-contribution">3,8256%</td><td>0,5738</td>
+                        </tr>
+                        <tr>
+                            <td class="tunus">8</td><td>2.008,2</td><td>0</td><td>2.008,2</td>
+                            <td>1/3.114,94</td><td class="highlight-contribution">4,298%</td><td>0,6447</td>
+                        </tr>
+                        <tr>
+                            <td class="tunus">7</td><td>374,9</td><td>0</td><td>374,9</td>
+                            <td>1/312,88</td><td class="highlight-contribution">7,988%</td><td>1,1982</td>
+                        </tr>
+                        <tr>
+                            <td class="tunus">6</td><td>65,6</td><td>0</td><td>65,6</td>
+                            <td>1/52,01</td><td class="highlight-contribution">8,4083%</td><td>1,2612</td>
+                        </tr>
+                        <tr>
+                            <td class="tunus">0</td><td>52,55</td><td>0</td><td>52,55</td>
+                            <td>1/31,55</td><td class="highlight-contribution">11,1025%</td><td>1,6654</td>
+                        </tr>
+                        <tr class="highlight-contribution">
+                            <td><strong>TOPLAM</strong></td><td><strong>-</strong></td><td><strong>-</strong></td>
+                            <td><strong>-</strong></td><td><strong>1/1</strong></td><td><strong>41,4407%</strong></td>
+                            <td><strong>6,2161</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="winning-section">
+                <div class="section-title">Kazanan Kategoriler</div>
+                <table class="category-table">
+                    <thead>
+                        <tr>
+                            <th>Tutturulan Sayı</th>
+                            <th>Kazanan Kişi Sayısı</th>
+                            <th>Kişi Başı İkramiye</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="tunus">10</td>
+                            <td>Devir</td>
+                            <td>2.760.941,75 ₺</td>
+                        </tr>
+                        <tr>
+                            <td class="tunus">9</td>
+                            <td>26</td>
+                            <td>32.749,4 ₺</td>
+                        </tr>
+                        <tr>
+                            <td class="tunus">8</td>
+                            <td>530</td>
+                            <td>2.008,2 ₺</td>
+                        </tr>
+                        <tr>
+                            <td class="tunus">7</td>
+                            <td>5.394</td>
+                            <td>374,9 ₺</td>
+                        </tr>
+                        <tr>
+                            <td class="tunus">6</td>
+                            <td>32.441</td>
+                            <td>65,6 ₺</td>
+                        </tr>
+                        <tr>
+                            <td class="tunus">0</td>
+                            <td>56.685</td>
+                            <td>52,55 ₺</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="footer">
+            <p>Bu sayfa otomatik olarak oluşturulmuştur. Son güncelleme: 14.11.2026 21:22:40</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -22,3 +22,10 @@ class GameDefinition:
     parser: Parser
     analyzer: Analyzer
     reporter: Reporter
+
+
+@dataclass(frozen=True)
+class GameRunResult:
+    game: GameDefinition
+    analysis: Dict[str, Any]
+    report_path: Path

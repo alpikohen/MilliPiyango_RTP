@@ -1,6 +1,8 @@
 import re
 
 from lottery_analyzer.sources.selenium_source import fetch_page_source
+from lottery_analyzer.models import GameRunResult
+from lottery_analyzer.sources.winning_list_parser import extract_draw_datetime
 
 
 def _draw_info(url):
@@ -15,21 +17,26 @@ def run_game(game):
     try:
         page_source = fetch_page_source(game.url, game.wait_selector)
         data = game.parser(page_source)
+        draw_datetime = extract_draw_datetime(page_source)
     except Exception as error:
         print(f"❌ Hata: {error}")
-        return False
+        return None
 
     if not data:
         print("\n❌ Veri alınamadı!")
-        return False
+        return None
 
     print(f"\n✅ {len(data)} liste bulundu!")
     analysis = game.analyzer(data)
+    if analysis is None:
+        print("\n❌ Analiz sonucu üretilemedi!")
+        return None
     html_content = game.reporter(
         data,
         analysis,
         _draw_info(game.url),
         game_name=game.name,
+        draw_datetime=draw_datetime,
         total_numbers=game.total_numbers,
         selected_numbers=game.selected_numbers,
         ticket_price=game.ticket_price,
@@ -37,4 +44,4 @@ def run_game(game):
     game.output_path.parent.mkdir(parents=True, exist_ok=True)
     game.output_path.write_text(html_content, encoding="utf-8")
     print(f"✅ HTML kaydedildi: {game.output_path}\n")
-    return True
+    return GameRunResult(game=game, analysis=analysis, report_path=game.output_path)

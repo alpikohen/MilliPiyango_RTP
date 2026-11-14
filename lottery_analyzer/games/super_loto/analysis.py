@@ -48,7 +48,7 @@ def calculate_rtp(data):
 
     for section in data:
         for item in section["items"]:
-            matched = int(item["tunus_sayisi"]) if item["tunus_sayisi"].isdigit() else 0
+            matched = int(item["tutus_sayisi"]) if item["tutus_sayisi"].isdigit() else 0
             prize = parse_prize(item["odul_text"])
             winners_text = item["kazanan_sayisi"].strip()
             winner_count = (

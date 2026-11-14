@@ -1,7 +1,6 @@
 from pathlib import Path
 
 from lottery_analyzer.games.super_loto.analysis import calculate_rtp
-from lottery_analyzer.games.super_loto.parser import parse_winning_lists
 from lottery_analyzer.games.super_loto.rules import (
     RESULTS_URL,
     SELECTED_NUMBERS,
@@ -11,15 +10,16 @@ from lottery_analyzer.games.super_loto.rules import (
 )
 from lottery_analyzer.models import GameDefinition
 from lottery_analyzer.reports.html import generate_html
+from lottery_analyzer.sources.winning_list_parser import parse_winning_lists
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 SUPER_LOTO = GameDefinition(
     slug="super-loto",
-    name="Super Loto 2026",
+    name="Süper Loto",
     url=RESULTS_URL,
-    output_path=PROJECT_ROOT / "cekilis_sonuclari.html",
+    output_path=PROJECT_ROOT / "super_loto.html",
     wait_selector=WAIT_SELECTOR,
     total_numbers=TOTAL_NUMBERS,
     selected_numbers=SELECTED_NUMBERS,
