@@ -19,5 +19,5 @@ ALL_CATEGORIES = tuple(
     for matches in range(SELECTED_NUMBERS, -1, -1)
     for category in (f"{matches}+1", str(matches))
 )
-RESULTS_URL = "https://www.millipiyangoonline.com/sans-topu/cekilis-sonuclari.90.2026"
+RESULTS_URL = "https://www.millipiyangoonline.com/sans-topu/cekilis-sonuclari.91.2026"
 WAIT_SELECTOR = "winning-list"

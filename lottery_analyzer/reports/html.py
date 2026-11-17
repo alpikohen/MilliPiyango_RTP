@@ -1,4 +1,5 @@
 from datetime import datetime
+from html import escape
 import math
 
 from lottery_analyzer.shared.formatting import tr_num
@@ -47,8 +48,9 @@ def generate_html(
         .category-table th {{ padding: 12px; text-align: center; font-weight: bold; font-size: 12px; }}
         .category-table td {{ padding: 12px; text-align: center; border-bottom: 1px solid #e0e0e0; font-size: 12px; }}
         .category-table tbody tr:hover {{ background: #f9f9f9; }}
-        .category-table .tunus {{ font-weight: bold; color: #1a4d8a; }}
+        .category-table .tutus {{ font-weight: bold; color: #1a4d8a; }}
         .category-table .highlight-contribution {{ background: #fff3cd; font-weight: bold; color: #856404; }}
+        .analysis-note {{ margin-top: 12px; color: #5d6770; font-size: 12px; line-height: 1.5; }}
     </style>
 </head>
 <body>
@@ -124,7 +126,7 @@ def generate_html(
             category_return = category.get("return_per_ticket", category.get("return_per_25tl", 0))
             return_text = tr_num(category_return, 4)
             html_content += f"""                        <tr>
-                            <td class="tunus">{category_label}</td><td>{prize_text}</td><td>{tax_text}</td><td>{net_prize_text}</td>
+                            <td class="tutus">{category_label}</td><td>{prize_text}</td><td>{tax_text}</td><td>{net_prize_text}</td>
                             <td>{probability_text}</td><td class="highlight-contribution">{rtp_text}</td><td>{return_text}</td>
                         </tr>
 """
@@ -139,6 +141,10 @@ def generate_html(
         )
         total_rtp_text = tr_num(rtp_data.get("category_rtp_total", rtp_percentage), 4) + "%"
         total_return_text = tr_num(total_return, 4)
+        assumption_notes_html = "".join(
+            f'<p class="analysis-note">{escape(note)}</p>'
+            for note in rtp_data.get("assumption_notes", [])
+        )
         total_probability = math.fsum(
             category.get("probability", 0)
             for category in rtp_data["category_analysis"].values()
@@ -162,6 +168,7 @@ def generate_html(
                         </tr>
                     </tbody>
                 </table>
+                {assumption_notes_html}
             </div>
 """
 
@@ -182,7 +189,7 @@ def generate_html(
             for item in section["items"]:
                 winner_text = item.get("kazanan_text") or item.get("kazanan_sayisi", "")
                 html_content += f"""                        <tr>
-                            <td class="tunus">{item['tutus_sayisi']}</td>
+                            <td class="tutus">{item['tutus_sayisi']}</td>
                             <td>{winner_text}</td>
                             <td>{item['odul_text']}</td>
                         </tr>

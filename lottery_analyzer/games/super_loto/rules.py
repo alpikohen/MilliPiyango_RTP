@@ -1,5 +1,5 @@
 TOTAL_NUMBERS = 60
 SELECTED_NUMBERS = 6
 TICKET_PRICE = 25
-RESULTS_URL = "https://www.millipiyangoonline.com/super-loto/cekilis-sonuclari.136.2026"
+RESULTS_URL = "https://www.millipiyangoonline.com/super-loto/cekilis-sonuclari.137.2026"
 WAIT_SELECTOR = "winning-list"

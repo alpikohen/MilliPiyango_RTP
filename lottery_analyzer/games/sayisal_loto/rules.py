@@ -1,0 +1,9 @@
+TOTAL_NUMBERS = 90
+SELECTED_NUMBERS = 6
+DRAWN_NUMBERS = 6
+JOKER_NUMBERS = 1
+TICKET_PRICE = 25
+ALL_CATEGORIES = ("6", "5+1", "5", "4", "3", "2", "1", "0")
+WINNING_CATEGORIES = ("6", "5+1", "5", "4", "3", "2")
+RESULTS_URL = "https://www.millipiyangoonline.com/sayisal-loto/cekilis-sonuclari.137.2026"
+WAIT_SELECTOR = "winning-list"

@@ -1,6 +1,6 @@
 # Milli Piyango Oyun Analizleri
 
-Milli Piyango oyunlarının çekiliş sonuçlarını Selenium ile alan, oyun kurallarına özel analiz yapan ve HTML raporları üreten bir Python projesi. Süper Loto, On Numara ve Şans Topu kayıtlıdır; yeni oyunlar `lottery_analyzer/games/` altına eklenebilir.
+Milli Piyango oyunlarının çekiliş sonuçlarını Selenium ile alan, oyun kurallarına özel analiz yapan ve HTML raporları üreten bir Python projesi. Süper Loto, On Numara, Şans Topu ve Çılgın Sayısal Loto kayıtlıdır; yeni oyunlar `lottery_analyzer/games/` altına eklenebilir.
 
 ## Neden?
 
@@ -32,6 +32,8 @@ cd C:\Users\ASUS\Desktop\MilliPiyango_RTP
 python run.py --game super-loto
 python run.py --game on-numara
 python run.py --game sans-topu
+python run.py --game sayisal-loto
+python run.py --game sayisal-loto-superstar
 ```
 
 Tüm kayıtlı oyunları çalıştırmak ve RTP sıralamalı genel raporu üretmek için:
@@ -40,7 +42,7 @@ Tüm kayıtlı oyunları çalıştırmak ve RTP sıralamalı genel raporu üretm
 python run.py --all
 ```
 
-Tekil komutlar sırasıyla `super_loto.html`, `on_numara.html` ve `sans_topu.html` üretir. `--all` ayrıca bu raporlara bağlantı ve oyunların RTP/kolon getirisi özetini içeren `index.html` oluşturur.
+Tekil komutlar `super_loto.html`, `on_numara.html`, `sans_topu.html`, `sayisal_loto.html` ve `sayisal_loto_superstar.html` raporlarını üretir. Sayısal Loto SüperStar seçeneği ayrı bir oyun olarak hesaplanır; kolon bedeli 40 TL'dir. `--all` tüm raporlara bağlantı içeren RTP özetini de üretir.
 
 ## Proje Yapısı
 
@@ -68,6 +70,16 @@ MilliPiyango_RTP/
 │   │   │   ├── game.py
 │   │   │   ├── rules.py
 │   │   │   └── analysis.py
+│   │   ├── sayisal_loto/
+│   │   │   ├── game.py
+│   │   │   ├── parser.py
+│   │   │   ├── rules.py
+│   │   │   └── analysis.py
+│   │   ├── sayisal_loto_superstar/
+│   │   │   ├── game.py
+│   │   │   ├── parser.py
+│   │   │   ├── rules.py
+│   │   │   └── analysis.py
 │   ├── reports/
 │   │   ├── html.py
 │   │   └── summary.py
@@ -77,5 +89,7 @@ MilliPiyango_RTP/
 ├── super_loto.html
 ├── on_numara.html
 ├── sans_topu.html
+├── sayisal_loto.html
+├── sayisal_loto_superstar.html
 └── index.html
 ```
