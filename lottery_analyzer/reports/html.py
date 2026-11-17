@@ -145,6 +145,7 @@ def generate_html(
             f'<p class="analysis-note">{escape(note)}</p>'
             for note in rtp_data.get("assumption_notes", [])
         )
+        # Toplam satırı, ekranda bulunan kategorilerin kapsadığı tüm sonuç uzayını doğrular.
         total_probability = math.fsum(
             category.get("probability", 0)
             for category in rtp_data["category_analysis"].values()

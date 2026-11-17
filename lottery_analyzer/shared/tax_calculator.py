@@ -1,4 +1,5 @@
 def calculate_tax(prize_amount):
+    # Muafiyet limiti ve oran mevzuata bağlıdır; resmî eşikler değişirse burada güncellenir.
     tax_free_limit = 66935
     tax_rate = 0.20
     if prize_amount <= tax_free_limit:

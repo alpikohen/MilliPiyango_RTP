@@ -15,6 +15,7 @@ def main(argv=None):
 
     games = list(GAMES.values()) if args.all else [get_game(args.game)]
     results = [run_game(game) for game in games]
+    # Başarılı oyunların özetini üret; başarısız olan varsa yine de CLI hata kodu döndür.
     successful_results = [result for result in results if result is not None]
     failed = len(successful_results) != len(results)
 

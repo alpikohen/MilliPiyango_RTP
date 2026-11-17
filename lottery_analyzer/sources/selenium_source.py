@@ -10,10 +10,12 @@ def fetch_page_source(url, wait_selector, timeout=20):
     driver = webdriver.Chrome(options=options)
     try:
         driver.get(url)
+        # Çekiliş listesi JavaScript ile yüklendiği için parse etmeden önce hedef bölümü bekle.
         WebDriverWait(driver, timeout).until(
             EC.presence_of_element_located((By.CLASS_NAME, wait_selector))
         )
         driver.implicitly_wait(2)
         return driver.page_source
     finally:
+        # İstek veya bekleme başarısız olsa bile Chrome sürecini açık bırakma.
         driver.quit()

@@ -11,6 +11,7 @@ def calculate_combinations(n, r):
 
 
 def calculate_probability(matched=0):
+    # 6 çekilen sayıdan isabet edenleri, kalan tahminleri 54 isabetsiz sayıdan seçer.
     probability = (
         calculate_combinations(SELECTED_NUMBERS, matched)
         * calculate_combinations(TOTAL_NUMBERS - SELECTED_NUMBERS, SELECTED_NUMBERS - matched)
@@ -33,6 +34,7 @@ def calculate_rtp(data):
         return None
 
     total_combinations = calculate_combinations(TOTAL_NUMBERS, SELECTED_NUMBERS)
+    # Ödül çıkmasa da 0-6 arasındaki tüm isabet kategorileri analizde tutulur.
     category_analysis = {
         index: {
             "prize_per_winner": 0,
@@ -58,6 +60,7 @@ def calculate_rtp(data):
             )
             scraped_total_prizes += float(prize) * winner_count
             probability = calculate_probability(matched)["probability"]
+            # Beklenen getiri, vergi sonrası kişi başı ödülün kategori olasılığıyla çarpımıdır.
             expected_value = (float(prize) - calculate_tax(float(prize))) * probability
             rtp_percentage = (expected_value / TICKET_PRICE) * 100
 

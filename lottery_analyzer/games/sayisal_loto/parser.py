@@ -15,9 +15,11 @@ def parse_results(page_source):
         filtered_items = []
         for source_item in section["items"]:
             label = str(source_item["tutus_sayisi"]).strip()
+            # Normal oyun raporuna SüperStar'ın ayrı kategori bloğu karışmamalıdır.
             if "süperstar" in label.casefold():
                 continue
 
+            # Sayfadaki açıklama/yıldız işaretini normalize edip Joker kategorisini koru.
             category = JOKER_LABEL.sub("", label).replace("*", "").strip()
             if category not in ALL_CATEGORIES:
                 continue

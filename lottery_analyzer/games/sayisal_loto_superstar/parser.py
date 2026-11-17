@@ -9,6 +9,7 @@ JOKER_ANNOTATION = re.compile(r"\s*\(joker\)\s*\*?", re.IGNORECASE)
 
 
 def parse_superstar_results(page_source):
+    # Temel parser normal bloğu ayıklar; aşağıda yalnızca SüperStar bloğu eklenir.
     results = parse_base_results(page_source)
     superstar_sections = []
 
@@ -19,6 +20,7 @@ def parse_superstar_results(page_source):
             if "süperstar" not in label.casefold():
                 continue
 
+            # Joker açıklamasını temizleyip raporda kullanılan kanonik kategori anahtarını oluştur.
             category = JOKER_ANNOTATION.sub("", label)
             category = re.sub(r"\s+", "", category).replace("*", "")
             if category not in SUPERSTAR_CATEGORIES:

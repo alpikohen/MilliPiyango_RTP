@@ -16,6 +16,7 @@ def run_game(game):
     print(f"🎯 {game.name} analizi başlatılıyor...\n")
     try:
         page_source = fetch_page_source(game.url, game.wait_selector)
+        # Aynı sayfa kaynağı hem sonuçları hem üst bilgideki çekiliş zamanını besler.
         data = game.parser(page_source)
         draw_datetime = extract_draw_datetime(page_source)
     except Exception as error:

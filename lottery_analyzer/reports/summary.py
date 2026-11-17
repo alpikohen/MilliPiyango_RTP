@@ -18,11 +18,13 @@ def _expected_return(result):
 
 
 def generate_summary_html(results, output_path):
+    # İndeks sırası, her oyunun detay raporunda gösterilen RTP toplamına göre belirlenir.
     ranked_results = sorted(results, key=_rtp_value, reverse=True)
     rows = []
 
     for rank, result in enumerate(ranked_results, start=1):
         game_name = escape(result.game.name)
+        # Detay dosyaları indeksle aynı klasörde olmasa da linkleri taşınabilir tut.
         report_link = escape(
             Path(os.path.relpath(result.report_path, output_path.parent)).as_posix(),
             quote=True,

@@ -25,6 +25,7 @@ def calculate_probability(category):
     if main_matches < 0 or main_matches > SELECTED_NUMBERS:
         return {"probability": 0, "odds": "İmkansız"}
 
+    # 34'lük ana küre ile 14'lük bonus küre bağımsız çekilir; '+' bonus isabetini belirtir.
     main_probability = (
         calculate_combinations(DRAWN_NUMBERS, main_matches)
         * calculate_combinations(
@@ -53,6 +54,7 @@ def calculate_rtp(data):
         return None
 
     total_combinations = calculate_combinations(TOTAL_NUMBERS, SELECTED_NUMBERS) * BONUS_NUMBERS
+    # Kazanılmayan sonuçlar da olasılık toplamının 1 olmasını sağlar.
     category_analysis = {
         category: {
             "label": category,

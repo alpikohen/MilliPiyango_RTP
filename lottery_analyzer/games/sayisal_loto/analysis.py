@@ -22,6 +22,7 @@ def calculate_probability(category):
     total_combinations = calculate_combinations(TOTAL_NUMBERS, SELECTED_NUMBERS)
     other_drawn_numbers = TOTAL_NUMBERS - DRAWN_NUMBERS - JOKER_NUMBERS
 
+    # 5+1 Joker'i tutturur; 5 kategorisi ise altıncı sayının Joker dışı olmasını şart koşar.
     if category == "5+1":
         favorable_combinations = (
             calculate_combinations(DRAWN_NUMBERS, 5)
@@ -81,6 +82,7 @@ def calculate_rtp(data):
     estimated_five_plus_one = None
     assumptions = []
 
+    # 5+1 kazananı yoksa, belirtilen yedek formülle tahmini ikramiye hesaplanır.
     if (
         five_plus_one_item is not None
         and five_plus_one_item["kazanan_sayisi"].strip().isdigit()
@@ -118,6 +120,7 @@ def calculate_rtp(data):
             category_label = "5+1*"
 
         probability = calculate_probability(category_name)["probability"]
+        # Kategori EV'si, vergiler sonrası kişi başı ikramiye × kategori olasılığıdır.
         expected_value = (float(prize) - calculate_tax(float(prize))) * probability
         rtp_percentage = (expected_value / TICKET_PRICE) * 100
 

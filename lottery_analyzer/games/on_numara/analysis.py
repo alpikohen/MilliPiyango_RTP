@@ -21,6 +21,7 @@ def calculate_probability(matched):
     if matched < 0 or matched > SELECTED_NUMBERS:
         return {"probability": 0, "odds": "İmkansız"}
 
+    # 22 çekilen sayıdan matched tanesi, kalan kupon seçimleri diğer 58 sayıdan gelir.
     probability = (
         calculate_combinations(DRAWN_NUMBERS, matched)
         * calculate_combinations(TOTAL_NUMBERS - DRAWN_NUMBERS, SELECTED_NUMBERS - matched)
@@ -40,6 +41,7 @@ def calculate_rtp(data):
         return None
 
     total_combinations = calculate_combinations(TOTAL_NUMBERS, SELECTED_NUMBERS)
+    # Kazandırmayan isabet adetleri de sonuç uzayını tamamlamak için listelenir.
     category_analysis = {
         matched: {
             "prize_per_winner": 0,
